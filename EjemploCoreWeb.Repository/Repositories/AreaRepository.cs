@@ -2,6 +2,7 @@
 using Dapper;
 using EjemploCoreWeb.Entities;
 using EjemploCoreWeb.Repository.Interfaces;
+using MySqlConnector;
 
 namespace EjemploCoreWeb.Repository.Repositories;
 
@@ -13,20 +14,31 @@ public class AreaRepository : IAreaRepository
     public async Task<IEnumerable<Area>> ListarAsync(string? filtro)
     {
         using var con = _factory.CreateConnection();
-        var sql = @"
-SELECT a.ID_Area, a.Nombre_Area, a.Jefe_Area, a.Codigo_Area,
-       CONCAT(u.Nombre,' ',u.Apellido_1,' ',u.Apellido_2) AS Jefe_Nombre
+        const string where = @"(@f IS NULL OR Nombre_Area LIKE CONCAT('%',@f,'%'))";
+
+        var sql = $@"
+SELECT  a.ID_Area,
+        a.Nombre_Area,
+        a.Jefe_Area,
+        u.Nombre    AS Jefe_Nombre
 FROM Areas a
 LEFT JOIN Usuario u ON u.ID_Usuario = a.Jefe_Area
-WHERE (@f IS NULL OR a.Nombre_Area LIKE CONCAT('%',@f,'%') OR a.Codigo_Area LIKE CONCAT('%',@f,'%'))
+WHERE {where}
 ORDER BY a.Nombre_Area;";
+
         return await con.QueryAsync<Area>(sql, new { f = string.IsNullOrWhiteSpace(filtro) ? null : filtro });
     }
 
     public async Task<Area?> ObtenerAsync(int id)
     {
         using var con = _factory.CreateConnection();
-        var sql = @"SELECT ID_Area, Nombre_Area, Jefe_Area, Codigo_Area FROM Areas WHERE ID_Area=@id;";
+        var sql = @"
+SELECT a.ID_Area, a.Nombre_Area, a.Jefe_Area,
+       u.Nombre AS Jefe_Nombre
+FROM Areas a
+LEFT JOIN Usuario u ON u.ID_Usuario = a.Jefe_Area
+WHERE a.ID_Area=@id
+LIMIT 1;";
         return await con.QueryFirstOrDefaultAsync<Area>(sql, new { id });
     }
 
@@ -34,8 +46,8 @@ ORDER BY a.Nombre_Area;";
     {
         using var con = _factory.CreateConnection();
         var sql = @"
-INSERT INTO Areas (Nombre_Area, Jefe_Area, Codigo_Area)
-VALUES (@Nombre_Area, @Jefe_Area, @Codigo_Area);
+INSERT INTO Areas (Nombre_Area, Jefe_Area)
+VALUES (@Nombre_Area, @Jefe_Area);
 SELECT LAST_INSERT_ID();";
         return await con.ExecuteScalarAsync<int>(sql, a);
     }
@@ -43,12 +55,11 @@ SELECT LAST_INSERT_ID();";
     public async Task<bool> ActualizarAsync(Area a)
     {
         using var con = _factory.CreateConnection();
-        var rows = await con.ExecuteAsync(@"
-UPDATE Areas SET
- Nombre_Area=@Nombre_Area,
- Jefe_Area=@Jefe_Area,
- Codigo_Area=@Codigo_Area
-WHERE ID_Area=@ID_Area;", a);
+        var sql = @"
+UPDATE Areas
+SET Nombre_Area=@Nombre_Area, Jefe_Area=@Jefe_Area
+WHERE ID_Area=@ID_Area;";
+        var rows = await con.ExecuteAsync(sql, a);
         return rows == 1;
     }
 
@@ -60,7 +71,7 @@ WHERE ID_Area=@ID_Area;", a);
             var rows = await con.ExecuteAsync("DELETE FROM Areas WHERE ID_Area=@id;", new { id });
             return rows == 1;
         }
-        catch (MySql.Data.MySqlClient.MySqlException ex) when (ex.Number == 1451)
+        catch (MySqlException ex) when (ex.Number == 1451) // FK constraint
         {
             return false;
         }

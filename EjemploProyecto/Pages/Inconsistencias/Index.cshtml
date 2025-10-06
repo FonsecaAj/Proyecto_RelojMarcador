@@ -1,0 +1,64 @@
+﻿@page
+@model EjemploProyecto.Pages.Inconsistencias.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Inconsistencias";
+}
+
+<h2 class="mb-3">Inconsistencias</h2>
+
+<table class="table table-sm table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Fecha</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var it in Model.Inconsistencias)
+        {
+            <tr>
+                <td>@it.ID_Inconsistencia</td>
+                <td>@it.Nombre_Inconsistencia</td>
+                <td>@it.Descripcion</td>
+                <td>@it.Fecha_Creacion</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var totalPaginas = (int)System.Math.Ceiling(
+        (double)Model.TotalRegistros / Model.TamanoPagina
+    );
+}
+
+<nav aria-label="Paginacion">
+    <ul class="pagination">
+        <li class="page-item @(Model.PaginaActual <= 1 ? "disabled" : "")">
+            <a class="page-link"
+               asp-page="./Index"
+               asp-route-pagina="@(Model.PaginaActual - 1)">Anterior</a>
+        </li>
+
+        @for (int p = 1; p <= totalPaginas; p++)
+        {
+            <li class="page-item @(p == Model.PaginaActual ? "active" : "")">
+                <a class="page-link"
+                   asp-page="./Index"
+                   asp-route-pagina="@p">@p</a>
+            </li>
+        }
+
+        <li class="page-item @(Model.PaginaActual >= totalPaginas ? "disabled" : "")">
+            <a class="page-link"
+               asp-page="./Index"
+               asp-route-pagina="@(Model.PaginaActual + 1)">Siguiente</a>
+        </li>
+    </ul>
+</nav>
+
+<partial name="~/Pages/Shared/_Alerts.cshtml" />

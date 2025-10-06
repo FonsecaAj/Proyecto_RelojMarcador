@@ -9,5 +9,6 @@ public interface IAreaService
     Task<int> CrearAsync(Area a);
     Task<bool> ActualizarAsync(Area a);
     Task<bool> EliminarAsync(int id);
-}
 
+    Task<IEnumerable<(int Id, string Nombre)>> ListarFuncionariosAsync();
+}

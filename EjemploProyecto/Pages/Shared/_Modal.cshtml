@@ -1,0 +1,39 @@
+﻿@{
+    var mTitle = TempData["Modal.Title"] as string;
+    var mBody = TempData["Modal.Body"] as string;
+    var mType = (TempData["Modal.Type"] as string ?? "danger").ToLower(); // danger|success|info|warning
+    bool shouldShow = !string.IsNullOrWhiteSpace(mTitle) && !string.IsNullOrWhiteSpace(mBody);
+    string headerClass = mType switch
+    {
+        "success" => "bg-success text-white",
+        "info" => "bg-info text-dark",
+        "warning" => "bg-warning text-dark",
+        _ => "bg-danger text-white"
+    };
+}
+<div class="modal fade" id="appModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header @headerClass">
+                <h5 class="modal-title" id="appModalLabel">@mTitle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">@Html.Raw(mBody)</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (() => {
+            const shouldShow = '@shouldShow'.toLowerCase() === 'true';
+            if (shouldShow) {
+                const modal = new bootstrap.Modal(document.getElementById('appModal'));
+                modal.show();
+            }
+        })();
+    </script>
+}

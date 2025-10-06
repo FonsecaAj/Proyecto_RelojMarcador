@@ -2,27 +2,51 @@
 using EjemploCoreWeb.Repository.Interfaces;
 using EjemploCoreWeb.Services.Interfaces;
 
-namespace EjemploCoreWeb.Services;
+namespace EjemploCoreWeb.Services.Services;
 
 public class UsuarioAreaService : IUsuarioAreaService
 {
-    private readonly IUsuarioRepository _usuarios;
-    private readonly IUsuarioAreaRepository _ua;
+    private readonly IUsuarioAreaRepository _repo;
+    private readonly IServiceProvider _sp;
 
-    public UsuarioAreaService(IUsuarioRepository usuarios, IUsuarioAreaRepository ua)
+    public UsuarioAreaService(IUsuarioAreaRepository repo, IServiceProvider sp)
     {
-        _usuarios = usuarios;
-        _ua = ua;
+        _repo = repo;
+        _sp = sp;
     }
 
-    public async Task<(Usuario? usuario, IEnumerable<UsuarioArea> asociadas, IEnumerable<Area> disponibles)> CargarAsync(int idUsuario)
+    private async Task TryLogAsync(string accion, object data)
     {
-        var u = await _usuarios.ObtenerAsync(idUsuario);
-        var asociadas = await _ua.ListarPorUsuarioAsync(idUsuario);
-        var disponibles = await _ua.ListarNoAsociadasAsync(idUsuario);
-        return (u, asociadas, disponibles);
+        try
+        {
+            var t = Type.GetType("EjemploCoreWeb.Services.Abstract.IBitacoraService, EjemploCoreWeb.Services");
+            if (t != null)
+            {
+                dynamic? bit = _sp.GetService(t);
+                if (bit != null) await bit.RegistrarAsync(accion, data);
+            }
+        }
+        catch { }
     }
 
-    public Task AsociarAsync(int idUsuario, int idArea) => _ua.AsociarAsync(idUsuario, idArea);
-    public Task<bool> DesasociarAsync(int idUsuario, int idArea) => _ua.DesasociarAsync(idUsuario, idArea);
+    public Task<IEnumerable<UsuarioArea>> ListarPorUsuarioAsync(int idUsuario)
+        => _repo.ListarPorUsuarioAsync(idUsuario);
+
+    public Task<IEnumerable<Area>> ListarNoAsociadasAsync(int idUsuario)
+        => _repo.ListarNoAsociadasAsync(idUsuario);
+
+    public async Task<bool> AsociarAsync(int idUsuario, int idArea)
+    {
+        var ok = await _repo.AsociarAsync(idUsuario, idArea);
+        if (ok) await TryLogAsync("Asociar Área a Usuario", new { ID_Usuario = idUsuario, ID_Area = idArea });
+        return ok;
+    }
+
+    public async Task<bool> DesasociarAsync(int idUsuario, int idArea)
+    {
+        var ok = await _repo.DesasociarAsync(idUsuario, idArea);
+        await TryLogAsync(ok ? "Desasociar Área de Usuario" : "Desasociar Área (bloqueado por FK)",
+                          new { ID_Usuario = idUsuario, ID_Area = idArea, Ok = ok });
+        return ok;
+    }
 }

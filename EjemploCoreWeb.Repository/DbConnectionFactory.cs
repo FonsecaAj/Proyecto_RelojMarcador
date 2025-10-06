@@ -1,30 +1,23 @@
-﻿using MySql.Data.MySqlClient;
 using Microsoft.Extensions.Configuration;
+using MySqlConnector;  
 using System.Data;
 
-namespace EjemploCoreWeb.Repository
+namespace EjemploCoreWeb.Repository;
+
+public class DbConnectionFactory : IDbConnectionFactory
 {
-    public class DbConnectionFactory : IDbConnectionFactory
+    private readonly string _cs;
+
+    public DbConnectionFactory(IConfiguration config)
     {
-
-
-        private readonly IConfiguration _configuration;
-
-        public DbConnectionFactory(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
-
-        public IDbConnection CreateConnection()
-        {
-
-            return new MySqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-
-        }
-    
-    
+        _cs = config.GetConnectionString("Default")
+            ?? throw new InvalidOperationException("Connection string 'Default' not found.");
     }
 
-
+    public IDbConnection CreateConnection()
+    {
+        var cn = new MySqlConnection(_cs);
+        cn.Open();
+        return cn;
+    }
 }
