@@ -1,4 +1,4 @@
-:root {
+﻿:root {
     --bg-primary: #f4f7fb;
     --bg-secondary: #1e293b;
     --brand-primary: #0066cc;
@@ -11,6 +11,7 @@
     font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
 }
 
+/* Estructura base */
 * {
     box-sizing: border-box;
 }
@@ -24,6 +25,7 @@ html, body {
     overflow: hidden;
 }
 
+/* 🔹 Header */
 .header {
     background-color: var(--brand-primary);
     color: white;
@@ -73,44 +75,76 @@ html, body {
         border: 2px solid white;
     }
 
+/* 🔹 Sidebar */
 .sidebar {
-    background-color: var(--bg-secondary);
-    color: var(--text-on-dark);
+    background-color: #1e2a38;
+    color: #f8f9fa;
     width: var(--sidebar-width);
     position: fixed;
     top: var(--header-height);
     bottom: 0;
     left: 0;
-    padding: 24px 0 20px 0;
+    padding: 20px 0;
     z-index: 999;
     border-top-right-radius: var(--radius);
     overflow-y: auto;
     transition: transform 0.3s ease-out;
 }
 
-    .sidebar a {
-        color: var(--text-on-dark);
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        padding: 12px 24px;
-        margin: 4px 16px;
-        border-radius: var(--radius);
-        transition: background-color 0.2s;
-        font-size: 15px;
+    /* Título del rol */
+    .sidebar h6 {
+        text-align: center;
+        color: #ffffff;
+        font-weight: 700;
+        margin-bottom: 10px;
+        letter-spacing: 0.5px;
     }
 
-        .sidebar a:hover {
-            background-color: var(--accent-hover);
-        }
+    /* Línea divisoria */
+    .sidebar hr {
+        border-color: rgba(255, 255, 255, 0.2);
+        margin: 10px 0;
+    }
 
-        .sidebar a i {
-            margin-right: 12px;
-            font-size: 1.1rem;
-            color: var(--text-muted);
-        }
+/* 🔹 Enlaces del menú lateral */
+.sidebar-link {
+    color: #e0e0e0 !important;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    margin: 4px 16px;
+    border-radius: var(--radius);
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
 
+    .sidebar-link i {
+        margin-right: 12px;
+        font-size: 1.1rem;
+        color: #cbd5e1;
+    }
 
+    .sidebar-link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #ffffff !important;
+    }
+
+    /* Enlace activo (opcional) */
+    .sidebar-link.active {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+    /* Cerrar sesión (resaltado) */
+    .sidebar-link.logout {
+        font-weight: 600;
+        color: #ffffff !important;
+    }
+
+/* 🔹 Contenido principal */
 .main-content {
     margin-left: var(--sidebar-width);
     margin-top: var(--header-height);
@@ -120,6 +154,7 @@ html, body {
     transition: margin-left 0.3s ease-out;
 }
 
+/* 🔹 Responsive */
 @media (max-width: 768px) {
     .sidebar {
         transform: translateX(-100%);

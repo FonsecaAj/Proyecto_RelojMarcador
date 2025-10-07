@@ -42,26 +42,63 @@
         <h6 class="text-center text-uppercase">@rolUsuario</h6>
         <hr class="border-light" />
 
-        if (rolUsuario == "Administrador")
-        {
-            <a href="/ADM_Usuarios"><i class="bi bi-people"></i> Gestión de Usuarios</a>
-            <a href="/ADM_Reportes"><i class="bi bi-file-earmark-text"></i> Reportes</a>
-            <a href="/ADM_Config"><i class="bi bi-gear"></i> Configuración</a>
-            <a href="/InconsistenciasM/Index"><i class="bi bi-exclamation-triangle"></i> Inconsistencias</a>
-        }
-        else if (rolUsuario == "Usuario")
-        {
-            <a href="/EMP_Horarios"><i class="bi bi-calendar-check"></i> Mis Horarios</a>
-            <a href="/EMP_Asistencias"><i class="bi bi-clipboard-check"></i> Asistencias</a>
-        }
-        else
-        {
-            <a href="/ADM_Login/Login"><i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión</a>
-        }
+        <ul class="sidebar-menu">
+            <li>
+                <a class="sidebar-link" asp-page="/Index">
+                    <i class="bi bi-house"></i> Home
+                </a>
+            </li>
+
+            <li>
+                <a class="sidebar-link" asp-page="/Privacy">
+                    <i class="bi bi-shield-lock"></i> Privacy
+                </a>
+            </li>
+
+            <li>
+                <a class="sidebar-link" asp-page="/ADM_Usuarios/Index">
+                    <i class="bi bi-people"></i> Usuarios
+                </a>
+            </li>
+
+            <li>
+                <a class="sidebar-link" asp-page="/ADM_Ausencias/Index">
+                    <i class="bi bi-calendar-x"></i> Motivos Ausencias
+                </a>
+            </li>
+
+            <li>
+                <a class="sidebar-link" asp-page="/Roles/Index">
+                    <i class="bi bi-person-badge"></i> Roles
+                </a>
+            </li>
+
+            <li>
+                <a class="sidebar-link" asp-page="/TiposIdentificacion/Index">
+                    <i class="bi bi-card-list"></i> Tipos Identificación
+                </a>
+            </li>
+
+            <li>
+                <a class="sidebar-link" asp-page="/InconsistenciasM/Index">
+                    <i class="bi bi-exclamation-triangle"></i> Inconsistencias
+                </a>
+            </li>
+
+            <li>
+                <a class="sidebar-link" asp-page="/ADM_Login/Login">
+                    <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
+                </a>
+            </li>
+        </ul>
 
         <hr class="border-light" />
-        <a href="/ADM_Login/Login"><i class="bi bi-box-arrow-left"></i> Cerrar Sesión</a>
+
+        <a href="/ADM_Login/Login" class="sidebar-link logout">
+            <i class="bi bi-box-arrow-left"></i> Cerrar Sesión
+        </a>
     </aside>
+
 
     <!-- Contenido principal -->
     <main class="main-content">

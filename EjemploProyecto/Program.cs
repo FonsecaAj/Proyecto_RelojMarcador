@@ -58,7 +58,7 @@ app.UseSession();
 app.UseAuthorization();
 
 // ---------------------------
-// Redirección inicial (ruta por defecto)
+// Redirección inicial (ruta de pruebas)
 // ---------------------------
 app.MapGet("/", context =>
 {
