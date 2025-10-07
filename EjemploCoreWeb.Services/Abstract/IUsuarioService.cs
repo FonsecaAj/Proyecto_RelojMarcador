@@ -11,11 +11,5 @@ namespace EjemploCoreWeb.Services.Abstract
     {
         Task<IEnumerable<Usuario>> GetAllAsync();
 
-        Task<int> Cambiar_Clave(Usuario usuario);
-
-        Task<Usuario?> Obtener_Usuario_X_Identificacion(string id);
-        string Autogenerar_Clave();
-
-
     }
 }
