@@ -25,8 +25,8 @@
 
 <script>
     (function () {
-        //const INACTIVITY_TIME = 5 * 60 * 1000; // 5 minutos
-        const INACTIVITY_TIME = 10 * 1000; // 5 minutos
+        const INACTIVITY_TIME = 5 * 60 * 1000; // 5 minutos
+        
         let timer;
 
         function resetTimer() {
@@ -103,6 +103,11 @@
             <li>
                 <a class="sidebar-link" asp-page="/TiposIdentificacion/Index">
                     <i class="bi bi-card-list"></i> Tipos Identificación
+                </a>
+            </li>
+            <li>
+                <a class="sidebar-link" asp-page="/Admin/Areas/Index">
+                    <i class="bi bi-card-list"></i> Areas
                 </a>
             </li>
 
