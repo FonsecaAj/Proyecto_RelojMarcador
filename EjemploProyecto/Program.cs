@@ -1,22 +1,21 @@
-using EjemploCoreWeb.Repository;                       // DbConnectionFactory
-using EjemploCoreWeb.Repository.Interfaces;            // repos interfaces
-using EjemploCoreWeb.Repository.Repositories;          // repos impl
+using EjemploCoreWeb.Repository;
+using EjemploCoreWeb.Repository.Interfaces;
+using EjemploCoreWeb.Repository.Repositories;
 
-// === Servicios NUEVOS (HU7, HU8, HU9) ===
-using SvcIf = EjemploCoreWeb.Services.Interfaces;     // IUsuarioService, IAreaService, IUsuarioAreaService, IRolService
-using SvcImpl = EjemploCoreWeb.Services.Services;      // UsuarioService, AreaService, UsuarioAreaService, RolService
+// Alias para Personas (ejemplo del profe)
+using PersonaAbstr = EjemploCoreWeb.Services.Abstract;
+using PersonaImpl = EjemploCoreWeb.Services;
 
-// === Servicio del ejemplo del profe (Personas) ===
-// OJO: este es el árbol “viejo”, lo aliasamos para no chocar nombres
-using PersonaAbstr = EjemploCoreWeb.Services.Abstract; // IPersonaService
-using PersonaImpl = EjemploCoreWeb.Services;          // PersonaService
+// Alias HU7/8/9
+using SvcIf = EjemploCoreWeb.Services.Interfaces;
+using SvcImpl = EjemploCoreWeb.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Razor Pages
 builder.Services.AddRazorPages();
 
-// Factory de conexión
+// Conexión
 builder.Services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
 
 // ===== Ejemplo del profe (Personas) =====
@@ -29,8 +28,9 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IAreaRepository, AreaRepository>();
 builder.Services.AddScoped<IUsuarioAreaRepository, UsuarioAreaRepository>();
 builder.Services.AddScoped<IRolRepository, RolRepository>();
+builder.Services.AddScoped<ITipoIdentificacionRepository, TipoIdentificacionRepository>(); // 👈 FALTABA
 
-// Services
+// Servicios
 builder.Services.AddScoped<SvcIf.IUsuarioService, SvcImpl.UsuarioService>();
 builder.Services.AddScoped<SvcIf.IAreaService, SvcImpl.AreaService>();
 builder.Services.AddScoped<SvcIf.IUsuarioAreaService, SvcImpl.UsuarioAreaService>();
