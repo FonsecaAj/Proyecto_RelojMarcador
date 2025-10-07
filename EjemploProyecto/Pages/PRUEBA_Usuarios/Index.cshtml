@@ -1,0 +1,39 @@
+﻿@page
+@model EjemploProyecto.Pages.PRUEBA_Usuarios.IndexModel
+@{
+    ViewData["Title"] = "Usuarios (prueba)";
+}
+
+<h2>Usuarios</h2>
+
+<form method="get" class="mb-3">
+    <input asp-for="Filtro" class="form-control d-inline-block w-auto" placeholder="Buscar..." />
+    <button class="btn btn-primary">Buscar</button>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido 1</th>
+            <th>Apellido 2</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Usuarios)
+        {
+            <tr>
+                <td>@item.Identificacion</td>
+                <td>@item.Nombre</td>
+                <td>@item.Apellido_1</td>   
+                <td>@item.Apellido_2</td>  
+                <td>
+                    <a asp-page="Edit" asp-route-id="@item.Identificacion">Editar</a>
+                    <a asp-page="Delete" asp-route-id="@item.Identificacion">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

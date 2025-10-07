@@ -1,0 +1,30 @@
+﻿@page
+@model EjemploProyecto.Pages.Admin.Areas.CreateModel
+@{
+    ViewData["Title"] = "Nueva área";
+}
+
+<h2>Nueva área</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Nombre del área</label>
+        <input asp-for="Input.Nombre_Area" class="form-control" />
+        <span asp-validation-for="Input.Nombre_Area" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Jefe del área</label>
+        <select asp-for="Input.Jefe_Area" asp-items="Model.Jefes" class="form-select">
+            <option value="">-- Seleccione --</option>
+        </select>
+        <span asp-validation-for="Input.Jefe_Area" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
