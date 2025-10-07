@@ -23,6 +23,15 @@ builder.Services.AddScoped<IInconsistenciaService, InconsistenciaService>();
 builder.Services.AddScoped<UsuarioRepository>();             // ya lo tenían así
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
+builder.Services.AddScoped<AusenciasRepository>();
+builder.Services.AddScoped<IMotivos_Ausencia, Motivos_Services>();
+
+builder.Services.AddScoped<AdmHorariosRepository>();
+builder.Services.AddScoped<IHorarios, HorariosServices>();
+
+//SE LLAMA INYECCION DE DEPENDENCIAS BROTHER
+
+// servicio de bit�cora
 builder.Services.AddScoped<IBitacoraService, BitacoraService>();
 
 // (Opcional/ejemplo del profe: lo dejamos activo, no estorba)

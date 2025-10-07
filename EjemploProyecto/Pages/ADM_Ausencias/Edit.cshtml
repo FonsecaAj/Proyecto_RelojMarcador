@@ -1,0 +1,64 @@
+﻿@page
+@model EjemploProyecto.Pages.ADM_Ausencias.EditModel
+@{
+    ViewData["Title"] = "Editar Motivo";
+}
+
+<h1>Editar Motivo</h1>
+
+<h4>Motivo</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="Motivo.ID_Motivo" class="control-label"></label>
+                <input asp-for="Motivo.ID_Motivo" class="form-control" readonly />
+                <span asp-validation-for="Motivo.ID_Motivo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Motivo.Nombre_Motivo" class="control-label"></label>
+                <input asp-for="Motivo.Nombre_Motivo" class="form-control" />
+                <span asp-validation-for="Motivo.Nombre_Motivo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Volver a la lista</a>
+</div>
+
+<!-- Modal de éxito -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="successModalLabel">Éxito</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                @ViewData["SuccessMessage"]
+            </div>
+            <div class="modal-footer">
+                <a asp-page="Index" class="btn btn-success">Aceptar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var msg = '@ViewData["SuccessMessage"]';
+            if (msg && msg !== '') {
+                var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                successModal.show();
+            }
+        });
+    </script>
+}

@@ -1,0 +1,80 @@
+﻿@page
+@model EjemploProyecto.Pages.ADM_Usuarios.Autogenerar_ClaveModel
+@{
+    ViewData["Title"] = "Autogenerar";
+}
+
+<h1>Clave autogenerada</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="Usuario.Identificacion" class="control-label"></label>
+                <input asp-for="Usuario.Identificacion" class="form-control" readonly />
+                <input type="hidden" asp-for="Usuario.Identificacion" />
+                <span asp-validation-for="Usuario.Identificacion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Usuario.Nombre" class="control-label"></label>
+                <input asp-for="Usuario.Nombre" class="form-control" readonly />
+                <span asp-validation-for="Usuario.Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Usuario.Contrasena" class="control-label"></label>
+                <input asp-for="Usuario.Contrasena" class="form-control" readonly />
+                <span asp-validation-for="Usuario.Contrasena" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3 d-flex gap-2">
+                <button type="submit" class="btn btn-success">Aceptar</button>
+                <a asp-page="Cambio_Clave" asp-route-id="@Model.Usuario.Identificacion" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" id="modalHeader">
+                <h5 class="modal-title" id="messageModalLabel">@ViewData["ModalTitle"]</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                @ViewData["ModalMessage"]
+            </div>
+            <div class="modal-footer">
+                @if ((string)ViewData["ModalType"] == "success")
+                {
+                    <a asp-page="Index" class="btn btn-success">Aceptar</a>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var msg = '@ViewData["ModalMessage"]';
+            var type = '@ViewData["ModalType"]';
+
+            if (msg && msg !== '') {
+                var modalHeader = document.getElementById("modalHeader");
+
+                if (type === "success") {
+                    modalHeader.classList.add("bg-success", "text-white");
+                } else {
+                    modalHeader.classList.add("bg-danger", "text-white");
+                }
+
+                var messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
+                messageModal.show();
+            }
+        });
+    </script>
+}

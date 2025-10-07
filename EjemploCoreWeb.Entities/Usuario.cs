@@ -2,17 +2,29 @@ namespace EjemploCoreWeb.Entities;
 
 public class Usuario
 {
-    public int ID_Usuario { get; set; }
-    public string Identificacion { get; set; } = "";
-    public string Nombre { get; set; } = "";
-    public string Apellido_1 { get; set; } = "";
-    public string Apellido_2 { get; set; } = "";
-    public string Correo { get; set; } = "";
-    public string? Telefono { get; set; }   // si te diera problema, cámbialo a: public string Telefono { get; set; } = "";
-    public int ID_Rol_Usuario { get; set; }
-    public string Nom_Usuario { get; set; } = "";
-    public string Contrasena { get; set; } = "";
-    public string Estado { get; set; } = "Activo"; // 'Activo' | 'Inactivo' en BD
+    public class Usuario
+    {
+        public int Id_Usuario { get; set; }
+        public string Identificacion { get; set; } = string.Empty;
+        public string Nombre { get; set; } = string.Empty;
+        public string Apellido_1 { get; set; } = string.Empty;
+        public string Apellido_2 { get; set; } = string.Empty;
+        public string Correo { get; set; } = string.Empty;
+        public string Telefono { get; set; }
+        public int IdRolUsuario { get; set; }
+        public string Contrasena { get; set; } = string.Empty;
+        public DateTime FechaCreacion { get; set; }
+        public bool Estado { get; set; }
 
-    public string NombreCompleto => $"{Nombre} {Apellido_1} {Apellido_2}".Trim();
+    }
+    public class Motivos_Ausencia
+    {
+
+        public int ID_Motivo { get; set; }
+
+        public string Nombre_Motivo { get; set; }
+
+    }
+
+
 }
