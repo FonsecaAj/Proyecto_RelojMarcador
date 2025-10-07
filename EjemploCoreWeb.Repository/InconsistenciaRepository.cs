@@ -20,11 +20,11 @@ namespace EjemploCoreWeb.Repository
             using var connection = _connectionFactory.CreateConnection();
 
             var tablas = await connection.QueryAsync<(string TableName, string ColumnName)>(@"
-        SELECT TABLE_NAME, COLUMN_NAME
-        FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
-        WHERE REFERENCED_TABLE_NAME = 'Inconsistencia'
-          AND REFERENCED_COLUMN_NAME = 'ID_Inconsistencia'
-          AND TABLE_SCHEMA = 'Reloj_Marcador'");
+                SELECT TABLE_NAME, COLUMN_NAME
+                FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+                WHERE REFERENCED_TABLE_NAME = 'Inconsistencia'
+                  AND REFERENCED_COLUMN_NAME = 'ID_Inconsistencia'
+                  AND TABLE_SCHEMA = 'Reloj_Marcador'");
 
             foreach (var t in tablas)
             {
